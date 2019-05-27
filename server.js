@@ -1,36 +1,25 @@
-"use strict";
-
-// ============================ DEPENDENCIES ============================
-
-// look, it's my dependencies
+// Node Express Package
 var express = require("express");
-var bodyParser = require("body-parser");
 
-// ============================= EXPRESS.js =============================
-
-// set up Express.js
+// Create Node server
 var app = express();
-var PORT = process.env.PORT || 8080; // so that I can deploy to Heroku or test locally on port 8080
 
-// set up Express.js to handle data parsing
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// PORT 8080 unless Heroku
+var PORT = process.env.PORT || 8080;
 
-// =============================== ROUTES ===============================
+// Data parsing
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 
-// bringing my externally-defined routes in...
-var apiRoutes = require("./app/routing/apiRoutes");
-var htmlRoutes = require("./app/routing/htmlRoutes");
+// Serve static pages in public (css, js)
+app.use(express.static(__dirname + '/app/public'));
 
-// api calls will be at [URL-to-this-site]/api.
-app.use("/api", apiRoutes);
+// Router
+// The order matters bc of the catch-all
+require("./app/routing/apiRoutes")(app);
+require("./app/routing/htmlRoutes")(app);
 
-// this makes it so that when the user hits up the root URL (aka "[URL-to-this-site]/"),
-// our server serves up the routes defined in htmlRoutes.js
-app.use("/", htmlRoutes);
-
-// ========================== EXPRESS.js LISTEN =========================
-
-app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
+// Start server and listen on PORT
+app.listen(PORT, function(){
+    console.log("FriendFinder App Server is listening on PORT: " + PORT);
 });
