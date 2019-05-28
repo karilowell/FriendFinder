@@ -18,7 +18,7 @@ module.exports = function (app) {
         response.json(matchedFriend);
     });
 
-}
+};
 
 // Calls compareScore for each user, then sorts
 function calculateMatch(newFriend) {
