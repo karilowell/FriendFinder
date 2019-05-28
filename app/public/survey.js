@@ -68,11 +68,17 @@ $("#form-submit").on("click", function (event) {
                 $('#modal').modal('open');
             }
 
+            
+
             // Clear form
             $("#name").val("");
             $("#photo").val("");
             loadQuestions();
         });
+
+    $.get("/api/friends", function (req, res) {
+        res.send()
+    })
     }
 });
 
